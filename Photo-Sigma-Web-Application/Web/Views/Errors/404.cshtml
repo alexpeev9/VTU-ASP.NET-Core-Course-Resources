@@ -1,0 +1,16 @@
+﻿@{
+    ViewData["Title"] = "Error";
+}
+
+<div>
+    <h1 class="text-danger text-center">Page Not Found</h1>
+    @if (@ViewBag.ErrorMessage != null)
+    {
+        <div>
+
+            <div class="container">
+                <h2 class="text-center">@ViewBag.ErrorMessage</h2>
+            </div>
+        </div>
+    }
+</div>

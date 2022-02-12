@@ -1,0 +1,50 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model IEnumerable<Post>
+
+<h1 class="text-center">Posts</h1>
+<table class="table">
+    <p>
+        <a asp-controller="Post" asp-action="Create">
+            Create a post
+        </a>
+    </p>
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImageUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rating)
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    <img class="img-responsive" src="@Url.Content(item.ImageUrl)" alt="@item.Title" style="width:200px;height:200px" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Rating)
+                </td>
+                <td>
+                    <p>
+                        <a asp-controller="Post" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    </p>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
