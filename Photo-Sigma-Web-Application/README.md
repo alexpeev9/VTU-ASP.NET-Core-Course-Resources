@@ -1,2 +1,0 @@
-# Photo-Sigma-Web-Application
- 
