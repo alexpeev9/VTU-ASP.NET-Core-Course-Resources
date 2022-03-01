@@ -21,29 +21,35 @@ namespace CatsProject.Controllers
         }
 
         // GET: Cats
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? errorMessage)
         {
+            ViewBag.ErrorMessage = errorMessage;
             var applicationDbContext = _context.Cats.Include(c => c.Breed);
             return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Cats/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public async Task<IActionResult> Details(Guid? id, string? errorMessage)
         {
-            if (id == null)
+            try
             {
-                return NotFound();
+                if( id == null)
+                {
+                    throw new Exception("Id not Defined!");
+                }
+                var cat = await _context.Cats
+                    .Include(c => c.Breed)
+                    .FirstOrDefaultAsync(m => m.Id == id);
+                if( cat == null)
+                {
+                    throw new Exception("Cat Not Found!");
+                }
+                return View(cat);
             }
-
-            var cat = await _context.Cats
-                .Include(c => c.Breed)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (cat == null)
+            catch(Exception exc)
             {
-                return NotFound();
+                return RedirectToAction(nameof(this.Index), new { errorMessage = exc.Message });
             }
-
-            return View(cat);
         }
 
         // GET: Cats/Create
