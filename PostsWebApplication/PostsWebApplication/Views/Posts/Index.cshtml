@@ -1,0 +1,18 @@
+﻿@model IList<PostModel>
+
+<h1>Posts Page</h1>
+
+@if (ViewBag.ErrorMessage != null)
+{ 
+ <h2 class="text-danger">@ViewBag.ErrorMessage</h2>
+}
+
+@foreach(PostModel post in Model)
+{
+    <section class="pb-1">
+        <span class="pr-1">@Html.DisplayFor(modelItem => post.Description)</span>
+        <a asp-action="Edit" asp-route-id="@post.Id" class="btn btn-primary">Edit</a>
+        <a asp-action="Details" asp-route-id="@post.Id" class="btn btn-success">Details</a>
+        <a asp-action="Delete" asp-route-id="@post.Id" class="btn btn-danger">Delete</a>
+    </section>
+}

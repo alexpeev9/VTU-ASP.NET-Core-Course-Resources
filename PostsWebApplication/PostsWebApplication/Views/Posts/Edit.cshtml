@@ -1,0 +1,11 @@
+﻿@model PostUpdateModel
+
+<h1>Edit</h1>
+<form asp-controller="Posts" asp-action="Edit" method="POST">
+    <div class="form-group">
+        <label>Post:</label>
+        <textarea class="form-control" rows="4" asp-for="@Model.Description"></textarea>
+        <span class="text-danger" asp-validation-for="Description"></span>
+    </div>
+    <button type="submit" class="btn btn-success">Update</button>
+</form>
