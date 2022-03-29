@@ -1,0 +1,9 @@
+﻿@model Models.Post
+
+<h1>Details</h1>
+
+<div>
+	<p>@Html.DisplayFor(model => model.Title)</p>
+	<p>@Html.DisplayFor(model => model.Rating)</p>
+	<img src="@Url.Content(Model.ImageUrl)" alt="Image" style="width:200px;height:200px" />
+</div>

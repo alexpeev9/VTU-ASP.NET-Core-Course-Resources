@@ -1,1 +1,20 @@
-﻿<h1>All Posts</h1>
+﻿@model IList<Models.Post>
+
+<h1>All Posts</h1>
+
+@foreach(var post in Model)
+{ 
+<div>
+	<p>@Html.DisplayFor(modelItem => post.Title)</p>
+	<img src="@Url.Content(post.ImageUrl)" alt="Image" style="width:200px;height:200px" />
+	<a asp-action="Details" asp-route-id="@post.Id">
+		<button class="btn btn-primary">Details</button>
+	</a>
+	<a asp-action="Edit" asp-route-id="@post.Id">
+		<button class="btn btn-success">Edit</button>
+	</a>
+	<a asp-action="Delete" asp-route-id="@post.Id">
+		<button class="btn btn-danger">Delete</button>
+	</a>
+</div>
+}

@@ -15,12 +15,11 @@ namespace Services.PostService
 		{
 			this.appDbContext = appDbConext;
 		}
-		public Post Create(Post post)
-		{
-			Post postDb = appDbContext.Posts.Add(post).Entity;
-			appDbContext.SaveChanges();
-			return postDb;
-		}
 
+		public void Create(Post post)
+		{
+			this.appDbContext.Posts.Add(post);
+			this.appDbContext.SaveChanges();
+		}
 	}
 }

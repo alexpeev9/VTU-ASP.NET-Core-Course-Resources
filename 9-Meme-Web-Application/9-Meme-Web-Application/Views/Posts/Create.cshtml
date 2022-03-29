@@ -4,6 +4,7 @@
 <form asp-controller="Posts" asp-action="Create" method="POST">
 	<p>Title:</p>
 	<input class="form-control" asp-for="@Model.Title" />
+	<p>Image:</p>
 	<input class="form-control" asp-for="@Model.ImageUrl" />
 	<button type="submit" class="btn btn-primary">Create</button>
 </form>
