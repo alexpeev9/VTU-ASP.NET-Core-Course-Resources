@@ -1,4 +1,5 @@
 ﻿using Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Services.PostService;
@@ -13,11 +14,14 @@ namespace _9_Meme_Web_Application.Controllers
 	{
 		private readonly AppDbContext appDbContext;
 		private readonly IPostService postService;
-		public PostsController(AppDbContext appDbContext, IPostService postService)
+		private readonly UserManager<User> userManager;
+		public PostsController(AppDbContext appDbContext, IPostService postService, UserManager<User> userManager)
 		{
 			this.appDbContext = appDbContext;
 			this.postService = postService;
-		
+			this.userManager = userManager;
+
+
 		}
 		[HttpGet]
 		public IActionResult Index()
@@ -72,7 +76,8 @@ namespace _9_Meme_Web_Application.Controllers
 		[HttpPost]
 		public IActionResult Create(Post post)
 		{
-			this.postService.Create(post);
+			string userId = userManager.GetUserId(User);
+			this.postService.Create(post, userId);
 			return RedirectToAction(nameof(this.Index));
 		}
 	}

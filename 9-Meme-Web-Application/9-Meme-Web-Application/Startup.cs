@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Models;
 using Services.PostService;
 
 namespace _9_Meme_Web_Application
@@ -24,10 +25,14 @@ namespace _9_Meme_Web_Application
 			services.AddDbContext<AppDbContext>(options =>
 				options.UseSqlServer(
 					Configuration.GetConnectionString("DefaultConnection")));
+
 			services.AddDatabaseDeveloperPageExceptionFilter();
 
-			services.AddDefaultIdentity<IdentityUser>()
-				.AddEntityFrameworkStores<AppDbContext>();
+			services.AddIdentity<User, IdentityRole>()
+						  .AddEntityFrameworkStores<AppDbContext>()
+						  .AddDefaultUI()
+						  .AddDefaultTokenProviders();
+
 			services.AddControllersWithViews();
 
 			services.AddTransient<IPostService, PostService>();

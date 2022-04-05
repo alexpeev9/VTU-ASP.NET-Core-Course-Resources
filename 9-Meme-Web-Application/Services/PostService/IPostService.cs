@@ -9,6 +9,6 @@ namespace Services.PostService
 {
 	public interface IPostService
 	{
-		void Create(Post post);
+		void Create(Post post, string userId);
 	}
 }

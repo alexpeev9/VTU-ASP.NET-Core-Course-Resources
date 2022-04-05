@@ -16,8 +16,9 @@ namespace Services.PostService
 			this.appDbContext = appDbConext;
 		}
 
-		public void Create(Post post)
+		public void Create(Post post, String userId)
 		{
+			post.UserId = userId;
 			this.appDbContext.Posts.Add(post);
 			this.appDbContext.SaveChanges();
 		}
