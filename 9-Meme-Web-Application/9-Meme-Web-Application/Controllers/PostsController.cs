@@ -1,6 +1,7 @@
 ﻿using Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Models;
 using Services.PostService;
 using System;
@@ -26,7 +27,21 @@ namespace _9_Meme_Web_Application.Controllers
 		[HttpGet]
 		public IActionResult Index()
 		{			
-			List<Post> posts = this.appDbContext.Posts.ToList();
+			List<Post> posts = this.appDbContext.Posts
+										.Include( p => p.User)
+										.Select( p => new Post() {
+												Id = p.Id,
+												Title = p.Title,
+												ImageUrl = p.ImageUrl,
+												Rating = p.Rating,
+												UserId = p.UserId,
+												User = new User()
+												{
+													Id = p.User.Id,
+													UserName = p.User.UserName,
+												}
+										})
+										.ToList();
 			return View(posts);
 		}
 
@@ -54,7 +69,17 @@ namespace _9_Meme_Web_Application.Controllers
 		[HttpGet]
 		public IActionResult Edit(Guid id)
 		{
+			string userId = userManager.GetUserId(User);
+
 			var post = this.appDbContext.Posts.Find(id);
+			if(post == null)
+			{
+				return RedirectToAction(nameof(this.Index));
+			}
+			if (post.UserId != userId)
+			{
+				return RedirectToAction(nameof(this.Index));
+			}
 
 			return View(post);
 		}
@@ -78,6 +103,60 @@ namespace _9_Meme_Web_Application.Controllers
 		{
 			string userId = userManager.GetUserId(User);
 			this.postService.Create(post, userId);
+			return RedirectToAction(nameof(this.Index));
+		}
+
+		[HttpGet]
+		public IActionResult UpVote(Guid id)
+		{
+			var userId = this.userManager.GetUserId(User);
+			var post = this.appDbContext.Posts.Find(id);
+			if(post.UserId == userId)
+			{
+				return RedirectToAction(nameof(this.Create));
+			}
+			var isVoted = this.appDbContext.PostUserMappings.Where(pum => pum.PostId == post.Id).Where(pum => pum.UserId == userId).SingleOrDefault();
+			if(isVoted != null)
+			{
+				return RedirectToAction(nameof(this.Create));
+			}
+			var vote = new PostUserMapping()
+			{
+				UserId = userId,
+				PostId = post.Id
+			};
+			this.appDbContext.PostUserMappings.Add(vote);
+
+			post.Rating += 1;
+			this.appDbContext.Update(post);
+			this.appDbContext.SaveChanges();
+			return RedirectToAction(nameof(this.Index));
+		}
+
+		[HttpGet]
+		public IActionResult DownVote(Guid id)
+		{
+			var userId = this.userManager.GetUserId(User);
+			var post = this.appDbContext.Posts.Find(id);
+			if (post.UserId == userId)
+			{
+				return RedirectToAction(nameof(this.Create));
+			}
+			var isVoted = this.appDbContext.PostUserMappings.Where(pum => pum.PostId == post.Id).Where(pum => pum.UserId == userId).SingleOrDefault();
+			if (isVoted != null)
+			{
+				return RedirectToAction(nameof(this.Create));
+			}
+			var vote = new PostUserMapping()
+			{
+				UserId = userId,
+				PostId = post.Id
+			};
+			this.appDbContext.PostUserMappings.Add(vote);
+
+			post.Rating -= 1;
+			this.appDbContext.Update(post);
+			this.appDbContext.SaveChanges();
 			return RedirectToAction(nameof(this.Index));
 		}
 	}

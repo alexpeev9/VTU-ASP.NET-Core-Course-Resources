@@ -1,20 +1,39 @@
-﻿@model IList<Models.Post>
+﻿@using Microsoft.AspNetCore.Identity
+@using Models
+
+@model IList<Models.Post>
+
+@inject UserManager<User> UserManager
 
 <h1>All Posts</h1>
 
-@foreach(var post in Model)
-{ 
+@foreach (var post in Model)
+{
 <div>
 	<p>@Html.DisplayFor(modelItem => post.Title)</p>
+	<p>Rating: @Html.DisplayFor(modelItem => post.Rating)</p>
+	<p>Creator: @Html.DisplayFor(modelItem => post.User.UserName)</p>
 	<img src="@Url.Content(post.ImageUrl)" alt="Image" style="width:200px;height:200px" />
 	<a asp-action="Details" asp-route-id="@post.Id">
 		<button class="btn btn-primary">Details</button>
 	</a>
-	<a asp-action="Edit" asp-route-id="@post.Id">
-		<button class="btn btn-success">Edit</button>
-	</a>
-	<a asp-action="Delete" asp-route-id="@post.Id">
-		<button class="btn btn-danger">Delete</button>
-	</a>
+	@if (UserManager.GetUserId(User) == post.User.Id)
+	{
+		<a asp-action="Edit" asp-route-id="@post.Id">
+			<button class="btn btn-success">Edit</button>
+		</a>
+		<a asp-action="Delete" asp-route-id="@post.Id">
+			<button class="btn btn-danger">Delete</button>
+		</a>
+	}
+	else
+	{
+		<a asp-action="UpVote" asp-route-id="@post.Id">
+			<button class="btn btn-secondary">UpVote</button>
+		</a>
+		<a asp-action="DownVote" asp-route-id="@post.Id">
+			<button class="btn btn-secondary">DownVote</button>
+		</a>
+	}
 </div>
 }
