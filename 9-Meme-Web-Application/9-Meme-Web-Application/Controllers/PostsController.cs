@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using Models.ViewModels;
 using Services.PostService;
 using System;
 using System.Collections.Generic;
@@ -25,24 +26,32 @@ namespace _9_Meme_Web_Application.Controllers
 
 		}
 		[HttpGet]
-		public IActionResult Index()
-		{			
-			List<Post> posts = this.appDbContext.Posts
-										.Include( p => p.User)
-										.Select( p => new Post() {
-												Id = p.Id,
-												Title = p.Title,
-												ImageUrl = p.ImageUrl,
-												Rating = p.Rating,
-												UserId = p.UserId,
-												User = new User()
-												{
-													Id = p.User.Id,
-													UserName = p.User.UserName,
-												}
+		public IActionResult Index(string? message)
+		{
+			string userId = userManager.GetUserId(User);
+			ViewBag.ErrorMessage = message;
+			List<PostVM> posts = this.appDbContext.Posts
+										.Include(p => p.User)
+										.Include(p => p.PostUserMappings)
+										.Select(p => new PostVM() {
+											Id = p.Id,
+											Title = p.Title,
+											ImageUrl = p.ImageUrl,
+											Rating = p.Rating,
+											UserId = p.UserId,
+											User = new User()
+											{
+												Id = p.User.Id,
+												UserName = p.User.UserName,
+											},
+											HasVoted = appDbContext.PostUserMappings.Any(pu => (pu.UserId == userId) && (pu.PostId == p.Id))
 										})
 										.ToList();
 			return View(posts);
+		}
+		private bool HasUserVoted(string userId, Guid postId)
+		{
+			return appDbContext.PostUserMappings.Any(pu => (pu.UserId == userId) && (pu.PostId == postId));
 		}
 
 		[HttpGet]
@@ -113,12 +122,12 @@ namespace _9_Meme_Web_Application.Controllers
 			var post = this.appDbContext.Posts.Find(id);
 			if(post.UserId == userId)
 			{
-				return RedirectToAction(nameof(this.Create));
+				return RedirectToAction(nameof(this.Index), new { message = "You cannot vote for your post!" });
 			}
 			var isVoted = this.appDbContext.PostUserMappings.Where(pum => pum.PostId == post.Id).Where(pum => pum.UserId == userId).SingleOrDefault();
 			if(isVoted != null)
 			{
-				return RedirectToAction(nameof(this.Create));
+				return RedirectToAction(nameof(this.Index), new { message= "You have already voted!"});
 			}
 			var vote = new PostUserMapping()
 			{
@@ -140,12 +149,12 @@ namespace _9_Meme_Web_Application.Controllers
 			var post = this.appDbContext.Posts.Find(id);
 			if (post.UserId == userId)
 			{
-				return RedirectToAction(nameof(this.Create));
+				return RedirectToAction(nameof(this.Index), new { message = "You cannot vote for your post!" });
 			}
 			var isVoted = this.appDbContext.PostUserMappings.Where(pum => pum.PostId == post.Id).Where(pum => pum.UserId == userId).SingleOrDefault();
 			if (isVoted != null)
 			{
-				return RedirectToAction(nameof(this.Create));
+				return RedirectToAction(nameof(this.Index), new { message = "You have already voted!" });
 			}
 			var vote = new PostUserMapping()
 			{

@@ -1,12 +1,16 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using Models
 
-@model IList<Models.Post>
+@model IList<Models.ViewModels.PostVM>
 
 @inject UserManager<User> UserManager
 
-<h1>All Posts</h1>
+@if (ViewBag.ErrorMessage != null)
+{
+	<p class="bg-danger text-white">@ViewBag.ErrorMessage</p>
+}
 
+<h1>All Posts</h1>
 @foreach (var post in Model)
 {
 <div>
@@ -28,12 +32,16 @@
 	}
 	else
 	{
-		<a asp-action="UpVote" asp-route-id="@post.Id">
-			<button class="btn btn-secondary">UpVote</button>
-		</a>
-		<a asp-action="DownVote" asp-route-id="@post.Id">
-			<button class="btn btn-secondary">DownVote</button>
-		</a>
+		@if (!post.HasVoted)
+		{
+			<a asp-action="UpVote" asp-route-id="@post.Id">
+				<button class="btn btn-secondary">UpVote</button>
+			</a>
+			<a asp-action="DownVote" asp-route-id="@post.Id">
+				<button class="btn btn-secondary">DownVote</button>
+			</a>
+		}
+
 	}
 </div>
 }
