@@ -1,4 +1,5 @@
 using Data;
+using Data.Seed;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Models;
 using Services.PostService;
+using System;
 
 namespace _9_Meme_Web_Application
 {
@@ -38,7 +40,7 @@ namespace _9_Meme_Web_Application
 			services.AddTransient<IPostService, PostService>();
 		}
 
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		public void Configure(IApplicationBuilder app, IServiceProvider serviceProvider, IWebHostEnvironment env)
 		{
 			if (env.IsDevelopment())
 			{
@@ -66,6 +68,8 @@ namespace _9_Meme_Web_Application
 					pattern: "{controller=Home}/{action=Index}/{id?}");
 				endpoints.MapRazorPages();
 			});
+
+			DbInitializer.Seed(serviceProvider.GetRequiredService<AppDbContext>());
 		}
 	}
 }
