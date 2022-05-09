@@ -69,7 +69,7 @@ namespace _9_Meme_Web_Application
 				endpoints.MapRazorPages();
 			});
 
-			DbInitializer.Seed(serviceProvider.GetRequiredService<AppDbContext>());
+			// DbInitializer.Seed(serviceProvider.GetRequiredService<AppDbContext>());
 		}
 	}
 }
