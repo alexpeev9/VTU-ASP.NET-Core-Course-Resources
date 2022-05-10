@@ -1,4 +1,5 @@
 ﻿using Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -94,6 +95,9 @@ namespace _9_Meme_Web_Application.Controllers
 		}
 
 		[HttpPost]
+		//[Authorize(Roles = "Administrator")] // only admins
+		//[Authorize] // only registered user
+		//[AllowAnonymous] // everyone
 		public IActionResult Edit(Post post)
 		{
 			this.appDbContext.Update(post);
