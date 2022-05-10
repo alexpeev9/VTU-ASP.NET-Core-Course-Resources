@@ -44,6 +44,22 @@ namespace Data.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "b0105a16-1c84-4de6-b418-51ab8fc487da",
+                            ConcurrencyStamp = "a13a049a-6c06-4c0c-bf87-d1a1cd7a90b8",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        },
+                        new
+                        {
+                            Id = "6ede8ca5-efee-41e6-b6a4-0b83c126ed37",
+                            ConcurrencyStamp = "bf6691e9-02ea-45b7-b52b-59784fbb4479",
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -176,6 +192,16 @@ namespace Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Posts");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("9305a498-da7c-408c-a099-90182b211ec4"),
+                            CreatedAt = new DateTime(2022, 5, 10, 7, 39, 59, 188, DateTimeKind.Utc).AddTicks(7725),
+                            ImageUrl = "https://s1.cdn.autoevolution.com/images/models/AUDI_R8-V10-performance-RWD-2021_main.jpg",
+                            Rating = 10,
+                            Title = "New Car"
+                        });
                 });
 
             modelBuilder.Entity("Models.PostUserMapping", b =>

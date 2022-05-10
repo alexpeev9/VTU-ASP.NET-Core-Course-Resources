@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Data.Migrations
 {
-    public partial class Intial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -199,6 +199,21 @@ namespace Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "b0105a16-1c84-4de6-b418-51ab8fc487da", "a13a049a-6c06-4c0c-bf87-d1a1cd7a90b8", "User", "USER" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "6ede8ca5-efee-41e6-b6a4-0b83c126ed37", "bf6691e9-02ea-45b7-b52b-59784fbb4479", "Administrator", "ADMINISTRATOR" });
+
+            migrationBuilder.InsertData(
+                table: "Posts",
+                columns: new[] { "Id", "CreatedAt", "ImageUrl", "Rating", "Title", "UserId" },
+                values: new object[] { new Guid("9305a498-da7c-408c-a099-90182b211ec4"), new DateTime(2022, 5, 10, 7, 39, 59, 188, DateTimeKind.Utc).AddTicks(7725), "https://s1.cdn.autoevolution.com/images/models/AUDI_R8-V10-performance-RWD-2021_main.jpg", 10, "New Car", null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
