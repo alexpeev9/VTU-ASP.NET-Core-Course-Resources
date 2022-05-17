@@ -31,23 +31,7 @@ namespace _9_Meme_Web_Application.Controllers
 		{
 			string userId = userManager.GetUserId(User);
 			ViewBag.ErrorMessage = message;
-			List<PostVM> posts = this.appDbContext.Posts
-										.Include(p => p.User)
-										.Include(p => p.PostUserMappings)
-										.Select(p => new PostVM() {
-											Id = p.Id,
-											Title = p.Title,
-											ImageUrl = p.ImageUrl,
-											Rating = p.Rating,
-											UserId = p.UserId,
-											User = new User()
-											{
-												Id = p.User.Id,
-												UserName = p.User.UserName,
-											},
-											HasVoted = appDbContext.PostUserMappings.Any(pu => (pu.UserId == userId) && (pu.PostId == p.Id))
-										})
-										.ToList();
+			List<PostVM> posts = this.postService.GetAllPosts(userId);
 			return View(posts);
 		}
 		private bool HasUserVoted(string userId, Guid postId)
@@ -69,9 +53,7 @@ namespace _9_Meme_Web_Application.Controllers
 		[HttpGet]
 		public IActionResult Delete(Guid id)
 		{
-			var post = this.appDbContext.Posts.Find(id);
-			this.appDbContext.Posts.Remove(post);
-			this.appDbContext.SaveChanges();
+			this.postService.Delete(id);
 			return RedirectToAction(nameof(this.Index));
 
 		}

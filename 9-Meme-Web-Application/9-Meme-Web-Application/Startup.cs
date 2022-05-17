@@ -1,4 +1,5 @@
 using Data;
+using Data.Repositories.PostRepository;
 using Data.Seed;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Models;
 using Services.PostService;
+using Services.VoteService;
 using System;
 
 namespace _9_Meme_Web_Application
@@ -37,6 +39,9 @@ namespace _9_Meme_Web_Application
 
 			services.AddControllersWithViews();
 
+			//services.AddTransient<IPostRepository, PostRepository>();
+
+			services.AddTransient<IVoteService, VoteService>();
 			services.AddTransient<IPostService, PostService>();
 		}
 
