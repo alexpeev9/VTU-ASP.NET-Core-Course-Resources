@@ -41,6 +41,7 @@ namespace CatsProject.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Age")
+                        .HasMaxLength(15)
                         .HasColumnType("int");
 
                     b.Property<Guid>("BreedId")
@@ -52,7 +53,8 @@ namespace CatsProject.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.HasKey("Id");
 
@@ -86,6 +88,22 @@ namespace CatsProject.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "e8b6fc47-ad33-486e-ac87-37d639562e71",
+                            ConcurrencyStamp = "08d0440c-037d-4e0d-954e-8bedd6d7ca3c",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        },
+                        new
+                        {
+                            Id = "r326fc47-ad33-486e-ac87-37d639562e71",
+                            ConcurrencyStamp = "94a97de7-27f8-4d60-8180-88e292f25ffa",
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -175,6 +193,21 @@ namespace CatsProject.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "18b6fc47-ad33-486e-ac87-37d639562e71",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "2d03df1e-ffa3-42ac-bc98-5d3708ad1bd1",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            PasswordHash = "AQAAAAEAACcQAAAAED6eRORzfwKr6fNwCgqejV4kx+Gi7Zx0zKyzyVmMGuTwxL/fC+d5RPJ5h/FcOTbmag==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "9479da10-1cae-4b7b-96fc-1b19da3cd04f",
+                            TwoFactorEnabled = false,
+                            UserName = "admin@abv.bg"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -238,6 +271,13 @@ namespace CatsProject.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "18b6fc47-ad33-486e-ac87-37d639562e71",
+                            RoleId = "r326fc47-ad33-486e-ac87-37d639562e71"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>

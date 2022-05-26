@@ -8,20 +8,21 @@ using Microsoft.EntityFrameworkCore;
 using CatsProject.Data;
 using CatsProject.Data.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace CatsProject.Controllers
 {
     public class CatsController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public CatsController(ApplicationDbContext context)
+		public CatsController(ApplicationDbContext context)
         {
             _context = context;
-        }
 
-        // GET: Cats
-        public async Task<IActionResult> Index(string? errorMessage)
+		}
+
+		// GET: Cats
+		public async Task<IActionResult> Index(string? errorMessage)
         {
             ViewBag.ErrorMessage = errorMessage;
             var applicationDbContext = _context.Cats.Include(c => c.Breed);
@@ -53,7 +54,7 @@ namespace CatsProject.Controllers
         }
 
         // GET: Cats/Create
-        [Authorize]
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
             ViewData["BreedId"] = new SelectList(_context.Breeds, "Id", "Name");
@@ -63,8 +64,8 @@ namespace CatsProject.Controllers
         // POST: Cats/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
-        public async Task<IActionResult> Create([Bind("Name,Age,ImageUrl,BreedId,Id")] Cat cat)
+		[Authorize(Roles = "Administrator")] // allows only admins to create cats
+		public async Task<IActionResult> Create([Bind("Name,Age,ImageUrl,BreedId,Id")] Cat cat)
         {
             if (ModelState.IsValid)
             {

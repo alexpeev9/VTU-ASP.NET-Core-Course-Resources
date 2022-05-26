@@ -169,8 +169,8 @@ namespace CatsProject.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Age = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    Age = table.Column<int>(type: "int", maxLength: 15, nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BreedId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
@@ -184,6 +184,26 @@ namespace CatsProject.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "e8b6fc47-ad33-486e-ac87-37d639562e71", "08d0440c-037d-4e0d-954e-8bedd6d7ca3c", "User", "USER" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "r326fc47-ad33-486e-ac87-37d639562e71", "94a97de7-27f8-4d60-8180-88e292f25ffa", "Administrator", "ADMINISTRATOR" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "18b6fc47-ad33-486e-ac87-37d639562e71", 0, "2d03df1e-ffa3-42ac-bc98-5d3708ad1bd1", null, false, false, null, null, null, "AQAAAAEAACcQAAAAED6eRORzfwKr6fNwCgqejV4kx+Gi7Zx0zKyzyVmMGuTwxL/fC+d5RPJ5h/FcOTbmag==", null, false, "9479da10-1cae-4b7b-96fc-1b19da3cd04f", false, "admin@abv.bg" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { "r326fc47-ad33-486e-ac87-37d639562e71", "18b6fc47-ad33-486e-ac87-37d639562e71" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

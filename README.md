@@ -1,5 +1,9 @@
 # Repository for Software Engineering
 
+## Добавяне на Login и Register страници
+
+![](assets/HowToAddIdentity.png)
+
 ## Примерни Въпроси
 
 ### Какво е Entity в C#?

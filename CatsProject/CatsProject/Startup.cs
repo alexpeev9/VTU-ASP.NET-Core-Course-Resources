@@ -33,7 +33,8 @@ namespace CatsProject
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<IdentityUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+				.AddRoles<IdentityRole>() // Must Be Added By Hand
+				.AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddControllersWithViews();
         }
